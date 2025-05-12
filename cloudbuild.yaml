@@ -23,10 +23,8 @@ args:
   - '--subnet'
   - 'default'
   - '--allow-unauthenticated'
-  - '--port'
-  - '8080'
-  - '--add-cloudsql-instances'
-  - 'hgu-variationdb:us-central1:variation-db'
+  - '--port=8080'
+  - '--add-cloudsql-instances=hgu-variationdb:us-central1:variation-db'
   - '--set-env-vars'
   - 'DEBUG=False,REDIS_HOST=10.246.200.203,SECRET_KEY=django-insecure-!!wso6cw*0%f_p%lo-&-4q_&^!j2e4^mj(e8%5=t79it!z2yj4,USE_CLOUD_SQL_AUTH_PROXY=true,DATABASES_URL=mysql://test-user-1:123456@//cloudsql/localhost:3306/GV_2'
 ]
