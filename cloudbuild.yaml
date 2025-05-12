@@ -8,7 +8,7 @@ args: ['push', 'asia-south1-docker.pkg.dev/hgu-variationdb/slgvd-docker-repo/slg
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
 entrypoint: glcoud
 args: [
-  'run', 'deploy', 'slgvd_backend',
+  'run', 'deploy', 'slgvd-backend',
   '--image', 'asia-south1-docker.pkg.dev/hgu-variationdb/slgvd-docker-repo/slgvd_backend:$SHORT_SHA',
   '--region', 'asia-south1',
   '--platform', 'managed',
@@ -16,13 +16,9 @@ args: [
   '--subnet', 'default',
   '--allow-unauthenticated',
   '--port=8080',
-  --add-cloudsql-instances=hgu-variationdb:us-central1:variation-db',
+  '--add-cloudsql-instances=hgu-variationdb:us-central1:variation-db',
   '--set-env-vars',
-  'DEBUG=False,
-  REDIS_HOST=10.246.200.203,
-  SECRET_KEY=django-insecure-!!wso6cw*0%f_p%lo-&-4q_&^!j2e4^mj(e8%5=t79it!z2yj4,
-  USE_CLOUD_SQL_AUTH_PROXY=true,
-  DATABASES_URL=mysql://test-user-1:123456@//cloudsql/localhost:3306/GV_2'
+  'DEBUG=False,REDIS_HOST=10.246.200.203,SECRET_KEY=django-insecure-!!wso6cw*0%f_p%lo-&-4q_&^!j2e4^mj(e8%5=t79it!z2yj4,USE_CLOUD_SQL_AUTH_PROXY=true,DATABASES_URL=mysql://test-user-1:123456@//cloudsql/localhost:3306/GV_2'
 ]
 
 images: ['asia-south1-docker.pkg.dev/hgu-variationdb/slgvd-docker-repo/slgvd_backend:$SHORT_SHA']
