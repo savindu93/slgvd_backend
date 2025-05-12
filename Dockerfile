@@ -10,7 +10,9 @@ WORKDIR /slgvd_backend
 
 # Install dependencies
 COPY requirements.txt .
-RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN apt-get update && \
+apt-get install -y gcc default-libmysqlclient-dev pkg-config && \
+pip install --upgrade pip && pip install -r requirements.txt
 
 # Copy project
 COPY . .

@@ -6,7 +6,7 @@ args: ['build', '-t', 'asia-south1-docker.pkg.dev/hgu-variationdb/slgvd-docker-r
 args: ['push', 'asia-south1-docker.pkg.dev/hgu-variationdb/slgvd-docker-repo/slgvd_backend:$SHORT_SHA']
 
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-entrypoint: glcoud
+entrypoint: gcloud
 args: [
   'run', 'deploy', 'slgvd-backend',
   '--image', 'asia-south1-docker.pkg.dev/hgu-variationdb/slgvd-docker-repo/slgvd_backend:$SHORT_SHA',
