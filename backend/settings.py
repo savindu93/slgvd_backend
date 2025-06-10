@@ -139,19 +139,6 @@ if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
     }
 
 
-# DATABASES = {
-
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'slgvd_n',
-#         'USER': 'root',
-#         'PASSWORD': '12022942021KYRWBwK',
-#         'HOST':'localhost',
-#         'PORT':'3306'
-#     }
-
-# }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -196,9 +183,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-# Allow your frontend domain ONCE DEPLOYED TO APP ENGINE
-# CORS_ALLOWED_ORIGINS = [
-#     "https://frontend-dot-my-project-id.ew.r.appspot.com",
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "https://slgvd-frontend-575906908337.asia-south1.run.app",
+ ]
 
 CORS_ALLOWS_CREDENTIALS = True
