@@ -132,13 +132,24 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 
-if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
+# if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
 
-    DATABASES = {
-        'default': env.db_url("DATABASES_URL")
+#    DATABASES = {
+#        'default': env.db_url("DATABASES_URL")
+#    }
+
+DATABASES = {
+
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'GV_2',
+        'USER': 'test-user-1',
+        'PASSWORD': '123456',
+        'HOST':'35.239.164.146',
+        'PORT':'3306'
     }
 
-
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
