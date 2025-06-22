@@ -11,8 +11,14 @@ WORKDIR /slgvd_backend
 # Install dependencies
 COPY requirements.txt .
 RUN apt-get update && \
-apt-get install -y gcc default-libmysqlclient-dev pkg-config && \
-pip install --upgrade pip && pip install -r requirements.txt
+apt-get install -y gcc default-libmysqlclient-dev pkg-config curl && \
+rm -rf /var/lib/apt/lists/*
+
+# Download and make the Cloud SQL Proxy executable (for DB connection)
+RUN curl -o /usr/local/bin/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.12.0/cloud-sql-proxy.linux.amd64 && \
+chmod +x /usr/local/bin/cloud-sql-proxy
+
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Copy project
 COPY . .
@@ -21,6 +27,8 @@ COPY . .
 EXPOSE 8080
 
 # Run ASGI server
-CMD ["daphne", "-b", "0.0.0.0", "-p", "8080", "backend.asgi:application"]
+CMD ["sh", "-c", "/usr/local/bin/cloud-sql-proxy --private-ip --port 3306 ${DB_CONNECTION_NAME} & sleep 5 && daphne -b 0.0.0.0 -p 8080 backend.asgi:application"]
+
+# CMD ["daphne", "-b", "0.0.0.0", "-p", "8080", "backend.asgi:application"]
 
 
