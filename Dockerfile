@@ -27,8 +27,9 @@ COPY . .
 EXPOSE 8080
 
 # Run ASGI server
-CMD ["sh", "-c", "/usr/local/bin/cloud-sql-proxy --private-ip --port 3306 ${DB_CONNECTION_NAME} & sleep 5 && daphne -b 0.0.0.0 -p 8080 backend.asgi:application"]
+CMD ["sh", "-c", "/usr/local/bin/cloud-sql-proxy --private-ip --port 3306 ${DB_CONNECTION_NAME} & sleep 5; if [\"$SERVICE_TYPE\" = \"celery\" ]; then celery -A config worker -l info; else daphne -b 0.0.0.0 -p 8080 backend.asgi:application; fi"]
 
 # CMD ["daphne", "-b", "0.0.0.0", "-p", "8080", "backend.asgi:application"]
+
 
 
