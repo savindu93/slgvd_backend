@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RetrieveDBSum, RetrieveDBData, RetrieveExtData , RetrieveDataSumByUser, DataUpload, Download, Update, Remove
+from .views import RetrieveDBSum, RetrieveDBData, RetrieveExtData , RetrieveDataSumByUser, DataUpload, Download, Update, Remove, JobStatus
 
 urlpatterns = [
     path('retrieve/', RetrieveDBData.as_view()),
@@ -9,7 +9,9 @@ urlpatterns = [
     path('upload/', DataUpload.as_view()),
     path('download/', Download.as_view()),
     path('update/', Update.as_view()),
-    path('remove/', Remove.as_view())
+    path('remove/', Remove.as_view()),
+    path('job-status/', JobStatus.as_view())
 ]
+
 
 

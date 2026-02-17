@@ -128,6 +128,19 @@ CHANNEL_LAYERS = {
     },
 }
 
+# Celery Setup
+CELERY_BROKER_URL = f"redis://{env("REDIS_HOST")}:6379/0"
+CELERY_RESULT_BACKEND = f"redis://{env("REDIS_HOST")}:6379/1"
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
+# GCS configuration
+DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+GS_BUCKET_NAME = "slgvd-uploads"
+GS_DEFAULT_ACL = None 
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -200,4 +213,5 @@ CORS_ALLOWED_ORIGINS = [
  ]
 
 CORS_ALLOWS_CREDENTIALS = True
+
 
