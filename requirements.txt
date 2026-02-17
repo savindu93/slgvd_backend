@@ -1,5 +1,5 @@
 asgiref==3.8.1
-celery==5.2
+celery==5.6.2
 channels==4.2.0
 channels_redis==4.2.1
 daphne==4.1.2
@@ -22,6 +22,7 @@ requests==2.32.3
 sqlparse==0.4.4
 urllib3==2.0.7
 xmltodict==0.14.2
+
 
 
 
