@@ -52,11 +52,17 @@ args:
   - 'SERVICE_TYPE=celery,DEBUG=False,REDIS_HOST=10.246.200.203,SECRET_KEY=django-insecure-!!wso6cw*0%f_p%lo-&-4q_&^!j2e4^mj(e8%5=t79it!z2yj4,USE_CLOUD_SQL_AUTH_PROXY=true,DATABASES_URL=mysql://test-user-1:123456@//cloudsql/localhost:3306/GV_2'
   - '--command'
   - 'celery'
-  - '--args=-A,config,worker,-l,info'
+  - '--args'
+  - '-A'
+  - 'config'
+  - 'worker'
+  - '-l'
+  - 'info'
 
 images: 
 
 - 'asia-south1-docker.pkg.dev/hgu-variationdb/cloud-run-source-deploy/slgvd_backend/slgvd-backend:$SHORT_SHA'
+
 
 
 
