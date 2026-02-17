@@ -77,7 +77,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'channels',
-    'drf_spectacular'
+    'drf_spectacular',
+    'storages'
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -136,6 +137,10 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 
+# GCS configuration
+DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+GS_BUCKET_NAME = "slgvd-uploads"
+GS_DEFAULT_ACL = None 
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -208,4 +213,5 @@ CORS_ALLOWED_ORIGINS = [
  ]
 
 CORS_ALLOWS_CREDENTIALS = True
+
 
