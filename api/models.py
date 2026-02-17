@@ -104,6 +104,16 @@ class VarCounts(models.Model):
     class Meta:
         db_table = 'var_counts'
 
+class UploadJob(models.Model):
+
+    created_at = models.DateTimeField(auto_new_add = True)
+    status = models.CharField(max_length = 20, default = "queued")
+    progress = models.IntegerField(default = 0)
+    error = models.TextField(blank = True, null = True)
+    file_path = models.JSONField(null = True)
+    file_type = models.CharField(max_length = 20)
+    username = models.CharField(max_length = 150)
+
 
 
 
