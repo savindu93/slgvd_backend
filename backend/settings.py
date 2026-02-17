@@ -77,7 +77,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'channels',
-    'drf_spectacular'
+    'drf_spectacular',
+    'storages'
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -199,3 +200,4 @@ CORS_ALLOWED_ORIGINS = [
  ]
 
 CORS_ALLOWS_CREDENTIALS = True
+
