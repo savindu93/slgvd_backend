@@ -603,7 +603,7 @@ def upload_to_gcs(vcf_files, bucket_name = "slgvd-upload"):
     return file_paths
 
 # Method to trigger vcf parser in management/commands
-def trigger_vcf_parse_job(job_id, gcs_path):
+def trigger_vcf_parse_job(job_id, gcs_paths):
 
     client = run_v2.JobsClient()
     job_path = f"projects/hgu-variationdb/locations/asia-south1/jobs/vcf-parser"
@@ -612,7 +612,7 @@ def trigger_vcf_parse_job(job_id, gcs_path):
         "container_overrides": [
             {
                 "args": ["python", "manage.py", "parse_vcf", "--id", str(job_id),
-                         "--path", gcs_path]
+                         "--path"] + gcs_paths
             }
         ]
     }
@@ -762,7 +762,7 @@ class DataUpload(APIView):
         # print("Queued Celery task id:", result.id)
 
         try:
-            trigger_vcf_parse_job(job.id, gcs_path)
+            trigger_vcf_parse_job(job.id, gcs_paths)
         except Exception as e:
             job.status.status = "failed"
             job.status.save()
@@ -1860,6 +1860,7 @@ class Remove(APIView):
 
 
         
+
 
 
 
