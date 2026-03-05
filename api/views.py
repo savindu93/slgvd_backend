@@ -608,14 +608,15 @@ def trigger_vcf_parse_job(job_id, gcs_paths):
     client = run_v2.JobsClient()
     job_path = f"projects/hgu-variationdb/locations/asia-south1/jobs/vcf-parser"
 
-    overrides = {
-        "container_overrides": [
-            {
-                "args": ["python", "manage.py", "parse_vcf", "--id", str(job_id),
-                         "--path"] + gcs_paths
-            }
-        ]
-    }
+    for path in gcs_paths:
+        overrides = {
+            "container_overrides": [
+                {
+                    "args": ["python", "manage.py", "parse_vcf", "--id", str(job_id),
+                             "--path", path]
+                }
+            ]
+        }
 
     # Trigger the start and return immediately
     client.run_job(name = job_path, overrides = overrides)
@@ -1860,6 +1861,7 @@ class Remove(APIView):
 
 
         
+
 
 
 
