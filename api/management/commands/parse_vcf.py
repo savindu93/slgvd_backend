@@ -37,6 +37,8 @@ class Command(BaseCommand):
     job_id = options['id']
     gcs_path = options['path']
 
+    job = UploadJob.objects.get(id = job_id)
+
     # Get UploadJobs entry relevant to the job_id and update status
     job.status = "processing"
     job.save(update_fields=['status'])
@@ -47,6 +49,7 @@ class Command(BaseCommand):
 
     print(filePath)
     print(job)
+    print(gcs_path)
     
     try:
 
@@ -66,16 +69,6 @@ class Command(BaseCommand):
       print(f"Got the job: {job}")
       channel_layer = get_channel_layer()
 
-      client = storage.Client()
-      # Split 'gs://my-bucket/folder/file.vcf' into 'my-bucket' and 'folder/file.vcf'
-      path_parts = gcs_path.replace("gs://", "").split("/", 1)
-      print(path_parts)
-      
-      bucket_name = path_parts[0]
-      blob_name = path_parts[1]
-
-      bucket = client.bucket(bucket_name)
-      blob = bucket.blob(blob_name)
   
       with transaction.atomic():
 
