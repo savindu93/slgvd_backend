@@ -585,7 +585,7 @@ def UpdateVarCounts(variant_objects, db_type, action_type):
 
 
 # Upload the VCF file to GCS
-def upload_to_gcs(vcf_files, bucket_name = "slgvd-upload"):
+def upload_to_gcs(vcf_files, bucket_name = "slgvd-uploads"):
 
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
@@ -1059,6 +1059,7 @@ class Remove(APIView):
 
 
         
+
 
 
 
