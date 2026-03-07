@@ -608,6 +608,8 @@ def trigger_vcf_parse_job(job_id, gcs_paths):
     client = run_v2.JobsClient()
     job_path = f"projects/hgu-variationdb/locations/asia-south1/jobs/vcf-parser"
 
+    print(job_path)
+    
     for path in gcs_paths:
         overrides = {
             "container_overrides": [
@@ -1059,6 +1061,7 @@ class Remove(APIView):
 
 
         
+
 
 
 
