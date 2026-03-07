@@ -114,6 +114,10 @@ class UploadJob(models.Model):
     file_type = models.CharField(max_length = 20)
     username = models.CharField(max_length = 150)
 
+    class Meta:
+        db_table = 'upload_job'
+
+
 
 
 
