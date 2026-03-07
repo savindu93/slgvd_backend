@@ -620,8 +620,14 @@ def trigger_vcf_parse_job(job_id, gcs_paths):
             ]
         }
 
+        # 2. Build the request object
+        request = run_v2.RunJobRequest(
+            name=job_path,
+            overrides=overrides
+        )
+
         # Trigger the start and return immediately
-        operation = client.run_job(name = job_path, overrides = overrides)
+        operation = client.run_job(request = request)
         print(f"Triggered job for {path}. Operation: {operation.name}")
 
 
@@ -1062,6 +1068,7 @@ class Remove(APIView):
 
 
         
+
 
 
 
