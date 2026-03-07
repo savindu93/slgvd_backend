@@ -5,6 +5,15 @@ args: ['build', '-t', 'asia-south1-docker.pkg.dev/hgu-variationdb/cloud-run-sour
 - name: 'gcr.io/cloud-builders/docker'
 args: ['push', 'asia-south1-docker.pkg.dev/hgu-variationdb/cloud-run-source-deploy/slgvd_backend/slgvd-backend:$SHORT_SHA']
 
+# Run Database Migrations
+- name: 'gcr.io/google-appengine/exec-wrapper'
+  args:
+    - '-i', 'asia-south1-docker.pkg.dev/hgu-variationdb/cloud-run-source-deploy/slgvd_backend/slgvd-backend:$SHORT_SHA'
+    - '-s', 'hgu-variationdb:us-central1:variation-db'
+    - '--', 'python', 'manage.py', 'migrate', '--noinput'
+  env:
+    - 'DATABASES_URL=mysql://test-user-1:123456@10.125.48.3:3306/GV_2'
+    
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
 entrypoint: gcloud
 timeout: 900s
@@ -50,6 +59,7 @@ args:
 images: 
 
 - 'asia-south1-docker.pkg.dev/hgu-variationdb/cloud-run-source-deploy/slgvd_backend/slgvd-backend:$SHORT_SHA'
+
 
 
 
