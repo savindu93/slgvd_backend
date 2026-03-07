@@ -128,14 +128,6 @@ CHANNEL_LAYERS = {
     },
 }
 
-# Celery Setup
-CELERY_BROKER_URL = f"redis://{env("REDIS_HOST")}:6379/0"
-CELERY_RESULT_BACKEND = f"redis://{env("REDIS_HOST")}:6379/1"
-
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'UTC'
 
 # GCS configuration
 DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
@@ -152,18 +144,7 @@ if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
         'default': env.db_url("DATABASES_URL")
     }
 
-#    DATABASES = {
-    
-#       'default': {
-#            'ENGINE': 'django.db.backends.mysql',
-#            'NAME': 'GV_2',
-#            'USER': 'test-user-1',
-#            'PASSWORD': '123456',
-#            'HOST':'/cloudsql/hgu-variationdb:us-central1:variation-db',
-#            'PORT':'3306'
-#        }
-    
-#    }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -213,5 +194,6 @@ CORS_ALLOWED_ORIGINS = [
  ]
 
 CORS_ALLOWS_CREDENTIALS = True
+
 
 
