@@ -35,7 +35,7 @@ args:
   - 'run'
   - 'jobs'
   - 'deploy'
-  - 'vcf-parser-job'
+  - 'vcf-parser'
   - '--image'
   - 'asia-south1-docker.pkg.dev/hgu-variationdb/cloud-run-source-deploy/slgvd_backend/slgvd-backend:$SHORT_SHA'
   - '--region'
@@ -54,6 +54,7 @@ args:
 images: 
 
 - 'asia-south1-docker.pkg.dev/hgu-variationdb/cloud-run-source-deploy/slgvd_backend/slgvd-backend:$SHORT_SHA'
+
 
 
 
