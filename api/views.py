@@ -768,6 +768,7 @@ class DataUpload(APIView):
         try:
             trigger_vcf_parse_job(job.id, gcs_paths)
         except Exception as e:
+            print(e)
             job.status = "failed"
             job.save()
             
@@ -1061,6 +1062,7 @@ class Remove(APIView):
 
 
         
+
 
 
 
