@@ -1,12 +1,24 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-args: ['build', '-t', 'asia-south1-docker.pkg.dev/hgu-variationdb/cloud-run-source-deploy/slgvd_backend/slgvd-backend:$SHORT_SHA', '.']
+  id: 'Build'
+  entrypoint: 'bash'
+  args: [
+    'build', 
+    '--provenance=false',
+    '-t', 'asia-south1-docker.pkg.dev/hgu-variationdb/cloud-run-source-deploy/slgvd_backend/slgvd-backend:$SHORT_SHA', '.']
 
 - name: 'gcr.io/cloud-builders/docker'
-args: ['push', 'asia-south1-docker.pkg.dev/hgu-variationdb/cloud-run-source-deploy/slgvd_backend/slgvd-backend:$SHORT_SHA']
+  id: 'Push'
+  args: ['push', 'asia-south1-docker.pkg.dev/hgu-variationdb/cloud-run-source-deploy/slgvd_backend/slgvd-backend:$SHORT_SHA']
 
+# A small 5-second wait to ensure Artifact Registry is fully synced
+- name: 'ubuntu'
+  id: 'Wait'
+  args: ['sleep', '5']
+  
 # Run Database Migrations
 - name: 'gcr.io/google-appengine/exec-wrapper'
+  id: 'Migrate'
   args:
     - '-i', 'asia-south1-docker.pkg.dev/hgu-variationdb/cloud-run-source-deploy/slgvd_backend/slgvd-backend:$SHORT_SHA'
     - '-s', 'hgu-variationdb:us-central1:variation-db'
