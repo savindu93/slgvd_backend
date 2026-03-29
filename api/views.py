@@ -627,8 +627,8 @@ def trigger_vcf_parse_job(job_id, gcs_paths):
         )
 
         # Trigger the start and return immediately
-        operation = client.run_job(request = request)
-        print(f"Triggered job for {path}. Operation: {operation.name}")
+        cloud_operation = client.run_job(request = request)
+        print(f"Triggered job for {path}. Operation: {cloud_operation.operation.name}")
 
 
 # Cleans the text file containing the filenames of the log files 
