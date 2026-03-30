@@ -16,6 +16,8 @@ import re, csv, json
 import os
 import io
 
+channel_layer = get_channel_layer()
+
 def send_progress(progress, status):
   async_to_sync(channel_layer.group_send)(
           "progress_progress_room",
