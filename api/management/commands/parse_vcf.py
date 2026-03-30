@@ -16,20 +16,21 @@ import re, csv, json
 import os
 import io
 
+def send_progress(progress, status):
+  async_to_sync(channel_layer.group_send)(
+          "progress_progress_room",
+          {
+              "type":"send_progress",
+              "progress_data":{"progress":progress, "status":status}
+          }
+      )
+    
 class Command(BaseCommand):
 
   def add_arguments(self, parser):
     parser.add_argument('--id', type = int)
     parser.add_argument('--path', type = str)
 
-  def send_progress(progress, status):
-    async_to_sync(channel_layer.group_send)(
-            "progress_progress_room",
-            {
-                "type":"send_progress",
-                "progress_data":{"progress":progress, "status":status}
-            }
-        )
 
   def handle(self, *args, **options):
 
