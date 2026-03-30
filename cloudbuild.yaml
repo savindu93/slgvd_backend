@@ -68,8 +68,24 @@ args:
   - '--no-allow-unauthenticated'
   - '--add-cloudsql-instances=hgu-variationdb:us-central1:variation-db'
 
-images: 
-- 'asia-south1-docker.pkg.dev/hgu-variationdb/cloud-run-source-deploy/slgvd_backend/slgvd-backend:$SHORT_SHA'
+options:
+  requestedVerifyOption: VERIFY
+  # This is the key: it tells Cloud Build NOT to generate provenance metadata
+  substitutionOption: ALLOW_LOOSE
+  pool:
+    name: ''
+  # Disable the automatic generation of provenance
+  logging: CLOUD_LOGGING_ONLY
+  dynamic_substitutions: true
+
+# suppress the metadata
+images:
+  - 'asia-south1-docker.pkg.dev/hgu-variationdb/cloud-run-source-deploy/slgvd_backend/slgvd-backend:$SHORT_SHA'
+
+# global setting:
+artifacts:
+  images:
+    - 'asia-south1-docker.pkg.dev/hgu-variationdb/cloud-run-source-deploy/slgvd_backend/slgvd-backend:$SHORT_SHA'
 
 
 
