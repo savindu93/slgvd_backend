@@ -147,6 +147,165 @@ class Command(BaseCommand):
 
                           # method to shorten alleles of length > 10 bp with run length encoding
                           def encoding_allele(allele):
+
+                              def shorten_allele(allele):
+
+                                  seq_bases = []
+                                  char_count = {}
+
+                                  for i, char in enumerate(allele):
+
+                                      base = list(char_count.keys())
+                                      base_count = 0
+
+                                      if len(base) != 0:
+                                          base_count = char_count[base[0]]
+
+                                      if char not in base:
+
+                                          if base_count >= 3:
+                                              seq_bases.append(f"{base_count}{base[0]}")
+
+                                          elif base_count <3 and base_count > 0:
+
+                                              if base_count == 2:
+                                                  seq_bases.append(f"{base[0]*2}")
+                                              
+                                              else:
+                                                  seq_bases.append(base[0])
+                                          
+                                          char_count.clear()
+
+                                          char_count[char] = 1
+
+                                          if i == len(allele) - 1:
+                                              seq_bases.append(list(char_count.keys())[0])
+                                      
+                                      elif char in base:
+                                              char_count[char] += 1
+
+                                              if i == len(allele) - 1:
+                                                  base_count = char_count[base[0]]
+                                                  # base = list(char_count.keys())[0]
+
+                                                  if base_count == 2:
+                                                      seq_bases.append(f"{char*2}")
+                                                  
+                                                  if base_count >= 3:
+                                                      seq_bases.append(f"{base_count}{char}")
+                                              
+                                  seq = "".join(seq_bases)
+
+                                  return seq
+                              
+                              def shorten_dinucleotide(allele):
+
+                                  # print(len(allele))
+                                  seq_bases = []
+                                  seq = allele
+
+                                  for z in range(2):
+                                      # print(z)
+
+                                      if len(seq_bases) > 0:
+                                          seq = "".join(seq_bases)
+                                          seq_bases.clear() 
+
+                                          if seq != allele:
+                                              # print(f"In break {z}")
+                                              break      
+
+                                      dinucleotide_count = {}
+
+                                      dinucleotides = [seq[i:i+2] for i in range(z, len(seq), 2)]
+                                      # print(dinucleotides)
+
+                                      if z == 1:
+                                          seq_bases.append(seq[0])
+
+                                      skip = False
+
+                                      for i, char in enumerate(dinucleotides):
+
+                                          dinucleotide = list(dinucleotide_count.keys())
+                                          char_count = 0
+
+                                          if len(dinucleotide) != 0:
+                                              char_count = dinucleotide_count[dinucleotide[0]]
+
+                                          if char not in dinucleotide:
+
+                                              if char_count >= 3:
+                                                  seq_bases.append(f"{char_count}({dinucleotide[0]})")
+
+                                              elif char_count <3 and char_count > 0:
+
+                                                  if char_count == 2:
+                                                      seq_bases.append(f"{dinucleotide[0]*2}")
+                                                  
+                                                  else:
+                                                      seq_bases.append(dinucleotide[0])
+                                              
+                                              dinucleotide_count.clear()
+
+                                              if len(char) == 1:
+                                                  seq_bases.append(char)
+                                                  continue
+                                              
+                                              if skip == True:
+                                                  seq_bases.append(char)
+                                                  skip = False
+                                                  continue
+
+                                              if char[0].isdigit() | char[1].isdigit():
+                                                  seq_bases.append(char)
+
+                                                  if char[1].isdigit():
+                                                      skip = True
+
+                                                  continue
+
+                                              dinucleotide_count[char] = 1
+
+                                              if i == len(dinucleotides) - 1:
+                                                  seq_bases.append(char)
+                                          
+                                          elif char in dinucleotide:
+                                              dinucleotide_count[char] += 1
+
+                                              if i == len(dinucleotides) - 1:
+                                                  char_count = dinucleotide_count[dinucleotide[0]]
+                                                  # dinucleotide = list(dinucleotide_count.keys())[0]
+
+                                                  if char_count == 2:
+                                                      seq_bases.append(f"{char*2}")
+                                                  
+                                                  if char_count >= 3:
+                                                      seq_bases.append(f"{char_count}({char})")
+
+                                      # print(allele)  
+                                      # print(seq_bases)
+                                      seq = "".join(seq_bases)
+                                      # print(seq)
+                                      # print(len(seq))
+
+                                  return seq
+                              
+                              s_allele = allele
+
+                              if len(s_allele) >= 10:
+                                  s_allele = shorten_allele(s_allele)
+                                  
+                              # print(s_ref)
+                              # print(len(ref))
+                              # print(len(s_ref))
+
+                              # print(s_alt)
+                              # print(len(alt))
+                              # print(len(s_alt))
+
+                              s_allele = shorten_dinucleotide(s_allele)
+
                               return s_allele
                           
                           # Ref & Alt alleles
@@ -158,7 +317,170 @@ class Command(BaseCommand):
                           # In some cases where heterozygous genotypes are found, both copies can have different variant alleles. alt_1 is for 2nd alt allele.
                           alt_1 = ""
 
-                          def encoding_allele(allele):
+                         def encoding_allele(allele):
+
+                              def shorten_allele(allele):
+    
+                                  seq_bases = []
+                                  char_count = {}
+    
+                                  for i, char in enumerate(allele):
+    
+                                      base = list(char_count.keys())
+                                      base_count = 0
+    
+                                      if len(base) != 0:
+                                          base_count = char_count[base[0]]
+    
+                                      if char not in base:
+    
+                                          if base_count >= 3:
+                                              seq_bases.append(f"{base_count}{base[0]}")
+    
+                                          elif base_count <3 and base_count > 0:
+    
+                                              if base_count == 2:
+                                                  seq_bases.append(f"{base[0]*2}")
+                                              
+                                              else:
+                                                  seq_bases.append(base[0])
+                                          
+                                          char_count.clear()
+    
+                                          char_count[char] = 1
+    
+                                          if i == len(allele) - 1:
+                                              seq_bases.append(list(char_count.keys())[0])
+                                      
+                                      elif char in base:
+                                              char_count[char] += 1
+    
+                                              if i == len(allele) - 1:
+                                                  base_count = char_count[base[0]]
+                                                  # base = list(char_count.keys())[0]
+    
+                                                  if base_count == 2:
+                                                      seq_bases.append(f"{char*2}")
+                                                  
+                                                  if base_count >= 3:
+                                                      seq_bases.append(f"{base_count}{char}")
+                                              
+                                  seq = "".join(seq_bases)
+    
+                                  return seq
+                              
+                              def shorten_dinucleotide(allele):
+    
+                                  # print(len(allele))
+                                  s_alleles = []
+                                  seq_bases = []
+                                  seq = allele
+    
+                                  for z in range(2):
+    
+                                      seq = allele    
+    
+                                      seq_bases.clear()
+                                      dinucleotide_count = {}
+    
+                                      dinucleotides = [seq[i:i+2] for i in range(z, len(seq), 2)]
+                                      print(dinucleotides)
+    
+                                      if z == 1:
+                                          seq_bases.append(seq[0])
+    
+                                      skip = False
+    
+                                      for i, char in enumerate(dinucleotides):
+    
+                                          dinucleotide = list(dinucleotide_count.keys())
+                                          char_count = 0
+    
+                                          if len(dinucleotide) != 0:
+                                              char_count = dinucleotide_count[dinucleotide[0]]
+    
+                                          if char not in dinucleotide:
+    
+                                              if char_count >= 3:
+                                                  seq_bases.append(f"{char_count}({dinucleotide[0]})")
+    
+                                              elif char_count <3 and char_count > 0:
+    
+                                                  if char_count == 2:
+                                                      seq_bases.append(f"{dinucleotide[0]*2}")
+                                                  
+                                                  else:
+                                                      seq_bases.append(dinucleotide[0])
+                                              
+                                              dinucleotide_count.clear()
+    
+                                              if len(char) == 1:
+                                                  seq_bases.append(char)
+                                                  continue
+                                              
+                                              if skip == True:
+                                                  seq_bases.append(char)
+                                                  skip = False
+                                                  continue
+    
+                                              if char[0].isdigit() | char[1].isdigit():
+                                                  seq_bases.append(char)
+    
+                                                  if char[1].isdigit():
+                                                      skip = True
+    
+                                                  continue
+    
+                                              dinucleotide_count[char] = 1
+    
+                                              if i == len(dinucleotides) - 1:
+                                                  seq_bases.append(char)
+                                          
+                                          elif char in dinucleotide:
+                                              dinucleotide_count[char] += 1
+    
+                                              if i == len(dinucleotides) - 1:
+                                                  char_count = dinucleotide_count[dinucleotide[0]]
+                                                  # dinucleotide = list(dinucleotide_count.keys())[0]
+    
+                                                  if char_count == 2:
+                                                      seq_bases.append(f"{char*2}")
+                                                  
+                                                  if char_count >= 3:
+                                                      seq_bases.append(f"{char_count}({char})")
+    
+                                      # print(allele)  
+                                      # print(seq_bases)
+                                      seq = "".join(seq_bases)
+                                      s_alleles.append(seq)
+                                      # print(seq)
+                                      # print(len(seq))
+    
+                                  # print(len(s_alleles[0]))
+                                  # print(len(s_alleles[1]))
+    
+                                  if len(s_alleles[0]) < len(s_alleles[1]):
+                                      seq = s_alleles[0]
+                                  else:
+                                      seq = s_alleles[1]
+                                  
+                                  return seq
+                              
+                              s_allele = allele
+    
+                              if len(s_allele) >= 10:
+                                  s_allele = shorten_allele(s_allele)
+                                  
+                              # print(s_ref)
+                              # print(len(ref))
+                              # print(len(s_ref))
+    
+                              # print(s_alt)
+                              # print(len(alt))
+                              # print(len(s_alt))
+    
+                              s_allele = shorten_dinucleotide(s_allele)
+    
                               return s_allele
                           
                           if "," in alt:
@@ -229,7 +551,58 @@ class Command(BaseCommand):
                           
                           # Create new entries or update existing entries
                           def create_update_entries(var_id, variant_object, freq_object, sub_id, progress, no_freqs_updated, last_time):
+                            
+                              # Check if a variant with an identical id exist
+                              entry = Variant.objects.filter(variation_id__exact = var_id)
+                              
+                              print(entry)
+
+                              # Check for any unregistered consequences in the con variable
+                              if "Unknown" in con:
+                                  con_unregistered.append(var_id)
+
+                              # If no variant already exist new variant entries are added to the database
+                              if not entry:
+                                  variant_objects.append(variant_object)
+                                  freq_objects.append(freq_object)
+                              
+                              # If a variant with same ID exist the allele counts for that variant are updated
+                              else:
+                                  print(now - last_time)
+                                  
+                                  # if (now - last_time) >= 20:
+                                  #     send_progress(progress, f"Updating {var_id} count")
+                                  #     last_time = time.time()
+
+                                  no_freqs_updated += 1
+                                  freqs_updated.append(var_id)
+
+                                  if hom == 'true':
+                                      freq = Frequency.objects.get(variation_id__exact = var_id)
+
+                                      freq.homo_count += 1
+
+                                      if "hom" not in freq.last_updated.keys():
+                                          freq.last_updated["hom"] = [sub_id]
+                                      else:
+                                          freq.last_updated["hom"].append(sub_id)
+
+                                      freq.save()
+
+                                  else:
+                                      freq = Frequency.objects.get(variation_id__exact = var_id)
+
+                                      freq.het_count += 1
+
+                                      if "het" not in freq.last_updated.keys():
+                                          freq.last_updated["het"] = [sub_id]
+                                      else:
+                                          freq.last_updated["het"].append(sub_id)
+                                      
+                                      freq.save()
+
                               return no_freqs_updated
+                         
                               
                           # variation_id
                           var_id = f"{chr}p{pos}r{s_ref}a{s_alt}"
