@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
 from api.models import UploadJob, Variant, Frequency, Submission, CNV, VarCounts
-from api.serializer import VarSerializer, FreqSerializer, CustomTokenObtainPairSerializer, 
-SubSerializer, CNVarSerializer, VarCountSerializer
+from api.serializer import VarSerializer, FreqSerializer, CustomTokenObtainPairSerializer, SubSerializer, CNVarSerializer, VarCountSerializer
 from api.views import UpdateVarCounts
 from google.cloud import storage
 from channels.layers import get_channel_layer
