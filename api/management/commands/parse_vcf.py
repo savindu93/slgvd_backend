@@ -64,6 +64,7 @@ class Command(BaseCommand):
       
       bucket = storage_client.bucket(bucket_name)
       blob = bucket.blob(blob_name)
+      
 
       # Parse VCF file and save variants in Cloud SQL
       print("Start parse")
@@ -496,7 +497,7 @@ class Command(BaseCommand):
                           last_time = time.time()
 
 
-                  log += f'File: {file.name} \nTotal number of variants uploaded: {len(variant_objects)} \
+                  log += f'File: {blob_name} \nTotal number of variants uploaded: {len(variant_objects)} \
                   \nTotal number of allele frequencies updated: {no_freqs_updated} \
                   \nVariants whose allele frequencies were updated: \n{freqs_updated} \n\n \
                   \nVariants with unregistered consequence types: \n{con_unregistered} \n \
@@ -645,7 +646,7 @@ class Command(BaseCommand):
 
                   
 
-                  log += f'File: {file.name} \nTotal number of variants uploaded: {len(variant_objects)} \nTotal number of allele frequencies updated: {no_freqs_updated} \nVariants whose allele frequencies were updated: \n{freqs_updated} \n\n'
+                  log += f'File: {blob_name} \nTotal number of variants uploaded: {len(variant_objects)} \nTotal number of allele frequencies updated: {no_freqs_updated} \nVariants whose allele frequencies were updated: \n{freqs_updated} \n\n'
 
                   # Saving new variant entries to database
                   if len(variant_objects) != 0:
