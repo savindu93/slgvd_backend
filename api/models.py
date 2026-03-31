@@ -111,6 +111,7 @@ class UploadJob(models.Model):
     progress = models.IntegerField(default = 0)
     error = models.TextField(blank = True, null = True)
     file_path = models.JSONField(null = True)
+    log_path = models.JSONField(default = list)
     file_type = models.CharField(max_length = 20)
     username = models.CharField(max_length = 150)
 
