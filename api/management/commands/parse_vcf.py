@@ -26,6 +26,19 @@ def send_progress(progress, status):
               "progress_data":{"progress":progress, "status":status}
           }
       )
+
+def upload_txt_to_gcs(content, filename, bucket_name = "slgvd-uploads"):
+
+  storage_client = storage.Client()
+  bucket = storage_client.bucket(bucket_name)
+
+  unique_filename = f"{uuid.uuid4()}_{filename}"
+  blob = bucket.blob(unique_filename)
+
+  # Upload text to file
+  blob.upload_from_string(content, content_type = "text/plain")
+
+  return f"gs://{bucket_name}/{unique_filename}"
     
 class Command(BaseCommand):
 
@@ -47,9 +60,7 @@ class Command(BaseCommand):
     send_progress(0, "Processing started")
 
     fileType = job.file_type
-    filePath = job.file_path
 
-    print(filePath)
     print(job)
     print(gcs_path)
     
@@ -70,8 +81,6 @@ class Command(BaseCommand):
       print("Start parse")
   
       print(f"Got the job: {job}")
-      channel_layer = get_channel_layer()
-
   
       with transaction.atomic():
 
@@ -669,15 +678,13 @@ class Command(BaseCommand):
 
       log += f"Variant data upload/update completed successfully"
 
-      # with open(f"{LOGS_DIR}/{job.id}-{sub_id}.log", "w") as f:
-      #     f.write(log)
-
-      # with open(f"{LOGS_DIR}/downloadable_files.txt", "a") as f:
-      #     f.write(f"{job.id}-{sub_id}.log\n")
+      # Saving log file as a text file in the GCS bucket
+      log_path = upload_txt_to_gcs(log, blob_name)
           
       job.status = "done"
       job.progress = 100
-      job.save(update_fields = ['progress', 'status'])
+      job.log.append(log_path)
+      job.save(update_fields = ['progress', 'log_path', 'status'])
 
       send_progress(job.progress, f'File Processing Complete')
 
