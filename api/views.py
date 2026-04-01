@@ -794,7 +794,10 @@ class Download(APIView):
         data = json.loads(raw_body)
         print(data)
 
-        content = json.loads(data['body'])['data']
+        job_id = json.loads(data['body']).get('job_id')
+        print(job_id)
+        
+        content = json.loads(data['body']).get('data')
         print(data)
 
         type = json.loads(data['body'])['type']
@@ -853,8 +856,31 @@ class Download(APIView):
         # of data to the database
         elif type == 'txt/plain':
 
-            response = HttpResponse(content, content_type='text/plain')
-            response['Content-Disposition'] = 'attachment; filename="Submission_Log.txt"'
+            job = UploadJob.objects.get(id = job_id)
+
+            status = job.status
+
+            if status != 'done':
+
+                return Response({'message': 'File parsing in progress'}, status = 202)
+                
+            elif status == 'done': 
+
+                job = UploadJob.objects.get(id = job_id)
+                gcs_path = job.log_path[0]
+    
+                storage_client = storage.Client()
+                blob_name = "/".join(gcs_path.replace("gs://","").split("/")[1:])
+    
+                bucket = storage_client.bucket("slgvd-uploads")
+                blob = bucket.blob(blob_name)
+    
+                signed_url = blob.generate_signed_url(expiration = timedelta(minutes=15))
+    
+                return Response({'download_url': signed_url}, status = 200)
+            
+            # response = HttpResponse(content, content_type='text/plain')
+            # response['Content-Disposition'] = 'attachment; filename="Submission_Log.txt"'
 
         return response
 
