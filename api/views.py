@@ -859,13 +859,13 @@ class Download(APIView):
 
             job = UploadJob.objects.get(id = job_id)
 
-            status = job.status
+            stat = job.status
 
-            if status != 'done':
+            if stat != 'done':
 
                 return Response({'message': 'File parsing in progress'}, status = status.HTTP_202_ACCEPTED)
                 
-            elif status == 'done': 
+            elif stat == 'done': 
 
                 job = UploadJob.objects.get(id = job_id)
                 gcs_path = job.log_path[0]
