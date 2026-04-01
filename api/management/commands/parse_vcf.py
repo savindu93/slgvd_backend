@@ -686,7 +686,7 @@ class Command(BaseCommand):
       
       job.status = "done"
       job.progress = 100
-      job.log.append(log_path)
+      job.log_path.append(log_path)
       job.save(update_fields = ['progress', 'log_path', 'status'])
 
       send_progress(job.progress, f'File Processing Complete')
