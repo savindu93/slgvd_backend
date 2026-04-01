@@ -21,7 +21,7 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.db.models import Q, F
 from django.db.models.expressions import  RawSQL
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 import re, csv, json
@@ -876,12 +876,13 @@ class Download(APIView):
                 bucket = storage_client.bucket("slgvd-uploads")
                 blob = bucket.blob(blob_name)
     
-                signed_url = blob.generate_signed_url(expiration = timedelta(minutes=15))
-    
-                return Response({'download_url': signed_url}, status = 200)
+                response = StreamingHttpResponse(
+                    blob.open("rb"),
+                    content_type = "text/plain"
+                )
             
-            # response = HttpResponse(content, content_type='text/plain')
-            # response['Content-Disposition'] = 'attachment; filename="Submission_Log.txt"'
+                # response = HttpResponse(content, content_type='text/plain')
+                response['Content-Disposition'] = f'attachment; filename="Submission_Log"'
 
         return response
 
