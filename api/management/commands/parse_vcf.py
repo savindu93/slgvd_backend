@@ -677,10 +677,12 @@ class Command(BaseCommand):
                       UpdateVarCounts(variant_objects, "gcnv", "upload")
 
       log += f"Variant data upload/update completed successfully"
-
+    
       # Saving log file as a text file in the GCS bucket
-      log_path = upload_txt_to_gcs(log, blob_name)
-          
+      log_path = upload_txt_to_gcs(log, f"log_{blob_name}")
+
+      print(log_path)
+      
       job.status = "done"
       job.progress = 100
       job.log.append(log_path)
