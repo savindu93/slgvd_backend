@@ -15,6 +15,7 @@ import time
 import re, csv, json
 import os
 import io
+import uuid
 
 channel_layer = get_channel_layer()
 
