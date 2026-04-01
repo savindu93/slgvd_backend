@@ -863,7 +863,7 @@ class Download(APIView):
 
             if status != 'done':
 
-                return Response({'message': 'File parsing in progress'}, status = 202)
+                return Response({'message': 'File parsing in progress'}, status = status.HTTP_202_ACCEPTED)
                 
             elif status == 'done': 
 
