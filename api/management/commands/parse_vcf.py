@@ -693,6 +693,9 @@ class Command(BaseCommand):
       job.log_path = job.log_path + [log_path]
       job.save(update_fields = ['progress', 'log_path', 'status'])
 
+      job = UploadJob.objects.get(id = job_id)
+      print(job.log_path)
+
       send_progress(job.progress, f'File Processing Complete')
 
     except Exception as e:
