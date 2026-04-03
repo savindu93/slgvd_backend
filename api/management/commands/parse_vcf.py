@@ -687,6 +687,9 @@ class Command(BaseCommand):
       
       job.status = "done"
       job.progress = 100
+
+      print(job.log_path)
+      
       job.log_path.append(log_path)
       job.save(update_fields = ['progress', 'log_path', 'status'])
 
