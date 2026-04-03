@@ -1,4 +1,6 @@
 from django.core.management.base import BaseCommand
+from django.db.models import Func, F, Value, JSONField
+from django.db.models.functions import Cast
 from api.models import UploadJob, Variant, Frequency, Submission, CNV, VarCounts
 from api.serializer import VarSerializer, FreqSerializer, CustomTokenObtainPairSerializer, SubSerializer, CNVarSerializer, VarCountSerializer
 from api.views import UpdateVarCounts
@@ -688,12 +690,17 @@ class Command(BaseCommand):
       job.status = "done"
       job.progress = 100
 
-      print(job.log_path)
-      
-      job.log_path = job.log_path + [log_path]
+      UploadJob.objects.filter(id = job_id).update(
+        log_path=Func(
+          F('log_path'),
+          Value('$'),
+          Value(log_path),
+          function='JSON_ARRAY_APPEND',
+        )
+      )
+
       job.save(update_fields = ['progress', 'log_path', 'status'])
 
-      job = UploadJob.objects.get(id = job_id)
       print(job.log_path)
 
       send_progress(job.progress, f'File Processing Complete')
