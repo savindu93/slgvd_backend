@@ -71,6 +71,7 @@ class Command(BaseCommand):
       storage_client = storage.Client()
       bucket_name = "slgvd-uploads"
       blob_name = '/'.join(gcs_path.split('/')[3:])
+      file_name = blob_name.split("_", 1)[1]
 
       print(blob_name)
       
@@ -503,11 +504,11 @@ class Command(BaseCommand):
                       if progress % 5 == 0 and progress not in prog_number and now - last_time >= 20:
 
                           prog_number.append(progress)
-                          send_progress(progress, f"Processing File")
+                          send_progress(progress, f"Processing {file_name}")
                           last_time = time.time()
 
 
-                  log += f'File: {blob_name} \nTotal number of variants uploaded: {len(variant_objects)} \
+                  log += f'File: {file_name} \nTotal number of variants uploaded: {len(variant_objects)} \
                   \nTotal number of allele frequencies updated: {no_freqs_updated} \
                   \nVariants whose allele frequencies were updated: \n{freqs_updated} \n\n \
                   \nVariants with unregistered consequence types: \n{con_unregistered} \n \
@@ -656,7 +657,7 @@ class Command(BaseCommand):
 
                   
 
-                  log += f'File: {blob_name} \nTotal number of variants uploaded: {len(variant_objects)} \nTotal number of allele frequencies updated: {no_freqs_updated} \nVariants whose allele frequencies were updated: \n{freqs_updated} \n\n'
+                  log += f'File: {file_name} \nTotal number of variants uploaded: {len(variant_objects)} \nTotal number of allele frequencies updated: {no_freqs_updated} \nVariants whose allele frequencies were updated: \n{freqs_updated} \n\n'
 
                   # Saving new variant entries to database
                   if len(variant_objects) != 0:
@@ -680,7 +681,7 @@ class Command(BaseCommand):
       log += f"Variant data upload/update completed successfully"
     
       # Saving log file as a text file in the GCS bucket
-      log_path = upload_txt_to_gcs(log, f"log_{blob_name}")
+      log_path = upload_txt_to_gcs(log, f"log_{file_name}")
 
       print(log_path)
       
@@ -701,9 +702,6 @@ class Command(BaseCommand):
     
       log = f'An error occurred during submission: {e} \
       Variant data upload/update unsuccessful '
-    
-      # with open(f"{LOGS_DIR}/downloadable_files.txt", "a") as f:
-      #         f.write(f"{job.id}-{sub_id}.log\n")
 
 
 
