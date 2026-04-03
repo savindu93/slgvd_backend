@@ -1,4 +1,4 @@
-from io import BytesIO
+import io
 import zipfile
 from celery import shared_task
 import time
