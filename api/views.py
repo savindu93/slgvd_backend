@@ -868,21 +868,35 @@ class Download(APIView):
             elif stat == 'done': 
 
                 job = UploadJob.objects.get(id = job_id)
-                gcs_path = job.log_path[0]
+                gcs_paths = job.log_path
     
                 storage_client = storage.Client()
-                blob_name = "/".join(gcs_path.replace("gs://","").split("/")[1:])
-    
                 bucket = storage_client.bucket("slgvd-uploads")
-                blob = bucket.blob(blob_name)
+
+                # Creating a zip file in memory
+                zip_buffer = io.BytesIO()
+
+                with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+                    
+                    for path in gcs_paths:
+                        blob_name = "/".join(path.replace("gs://","").split("/")[1:])
+                        blob = bucket.blob(blob_name)
+
+                        # Original name
+                        ori_name = blob_name.split("_", 1)[1]
+
+                        # Download blob content
+                        content = blob.download_as_bytes()
+                        zip_file.writestr(ori_name, content)
+
+                zip_buffer.seek(0)
     
-                response = StreamingHttpResponse(
-                    blob.open("rb"),
-                    content_type = "text/plain"
+                response = HttpResponse(
+                    zip_buffer,
+                    content_type = "application/zip"
                 )
             
-                # response = HttpResponse(content, content_type='text/plain')
-                response['Content-Disposition'] = f'attachment; filename="Submission_Log"'
+                response['Content-Disposition'] = f'attachment; filename="Submission_Logs.zip"'
 
         return response
 
