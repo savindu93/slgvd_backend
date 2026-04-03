@@ -690,16 +690,15 @@ class Command(BaseCommand):
       job.status = "done"
       job.progress = 100
 
-      UploadJob.objects.filter(id = job_id).update(
-        log_path=Func(
-          F('log_path'),
-          Value('$'),
-          Value(log_path),
-          function='JSON_ARRAY_APPEND',
-        )
-      )
+      from django.db import connection
+      
+      with connection.cursor() as cursor:
+          cursor.execute(
+              "UPDATE upload_job SET log_path = JSON_ARRAY_APPEND(log_path, '$', %s) WHERE id = %s",
+              [log_path, job_id]
+          )
 
-      job.save(update_fields = ['progress', 'log_path', 'status'])
+      job.save(update_fields = ['progress', 'status'])
 
       print(job.log_path)
 
