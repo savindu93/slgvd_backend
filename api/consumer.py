@@ -22,7 +22,11 @@ class ProgressConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
     async def receive(self, text_data):
-        return None
+        data = json.loads(text_data)
+
+        if data.get('type') == 'ping':
+            await self.send(text_data=json.dumps({'type': 'pong'}))
+
 
     
     async def send_progress(self, text_data):
