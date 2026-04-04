@@ -503,7 +503,7 @@ class Command(BaseCommand):
 
                               no_freqs_updated = create_update_entries(var_id, variant_object_1, freq_object_1, sub_id, progress, no_freqs_updated, last_time)
 
-                      if progress % 5 == 0 and progress not in prog_number and now - last_time >= 3:
+                      if progress % 1 == 0 and progress not in prog_number and now - last_time >= 3:
 
                           prog_number.append(progress)
                           send_progress(progress, f"Processing {file_name}")
