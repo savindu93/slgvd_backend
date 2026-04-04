@@ -560,6 +560,9 @@ def UpdateVarCounts(variant_objects, db_type, action_type):
 
             for con,count in con_counts.items():
 
+                if con == 'Feature Ablation':
+                    continue
+
                 field = con_relation_mapping[con]
                 print(field)
 
@@ -569,6 +572,9 @@ def UpdateVarCounts(variant_objects, db_type, action_type):
             var_counts.ssv_count -= ssv_count
 
             for con,count in con_counts.items():
+
+                if con == 'Feature Ablation':
+                    continue
 
                 field = con_relation_mapping[con]
                 print(field)
