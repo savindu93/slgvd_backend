@@ -387,12 +387,12 @@ class Command(BaseCommand):
                           het = row[67]
                           hom = row[68]
 
-                          if hom == 'true':
+                          if hom.lower() == 'true':
                               homo_count = 1
                               het_count = 0
                               last_updated = {"hom":[sub_id]}
 
-                          elif het == 'true':
+                          elif het.lower() == 'true':
                               het_count = 1
                               homo_count = 0
                               last_updated = {"het":[sub_id]}
